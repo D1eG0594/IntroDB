@@ -76,4 +76,16 @@ drop user usuario1
 grant select, insert, update, delete on tabla1 to usuario1;
 revoke select. insert, update, delete on tabla1 from usuario1;
 
+#DQL
+
+select * from tabla1;
+select * from tabla1 where id='2';
+select * from tabla1 where name like '%j%'; #%a termina en a, a% empieza en a, %a% tiene a en cualquier parte, importa si es mayucula o minuscula
+
+select name, password from tabla1; #Seleccionar los datos de una colomna o varias
+
+select name as tablaName from tabla1; # Modificar le nombre de una columna temporalmene
+
+select count(*) from tabla1; #Saber cunatas filas tiene la tabla
+
 
