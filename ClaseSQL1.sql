@@ -88,4 +88,35 @@ select name as tablaName from tabla1; --Modificar le nombre de una columna tempo
 
 select count(*) from tabla1; #Saber cunatas filas tiene la tabla
 
+------------------------------------------
+create table if not exists grades (
+	code int primary key,
+	name varchar(10) not null,
+	grade decimal default 0.0
 
+);
+
+insert into grades(code, name, grade) values (123, 'Juan', 3.1);
+insert into grades(code, name, grade) values (436, 'Juana', 3.5);
+insert into grades(code, name, grade) values (145, 'Juanita', 3.8);
+insert into grades(code, name, grade) values (165, 'Carlos', 3.3);
+insert into grades(code, name, grade) values (143, 'David', 3.9);
+insert into grades(code, name, grade) values (657, 'Sara', 4.0);
+insert into grades(code, name, grade) values (765, 'Daniel', 2.9);
+insert into grades(code, name, grade) values (147, 'Daniel', 4.5);
+insert into grades(code, name) values (859, 'Kevin');
+
+drop table grades; 
+
+
+select sum(grade) as sum_total from grades; --Suma todas las filas de una columna.
+select round(avg(grade),1) as AvgGrade, max(grade) as MaxGrade, min(grade) as MinGrade from grades; --Promedio, calor maxion y valor minimo.
+
+
+select grade from grades limit 5;
+select grade from grades order by grade desc;
+select grade from grades order by grade desc limit 4;
+
+select grade from grades limit 3 offset 5; --Primero cuantas filas quero traer y despues desde cual fila empieza a mostrar
+
+select name, count(*) from grades group by name;
