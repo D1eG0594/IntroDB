@@ -120,3 +120,66 @@ select grade from grades order by grade desc limit 4;
 select grade from grades limit 3 offset 5; --Primero cuantas filas quero traer y despues desde cual fila empieza a mostrar
 
 select name, count(*) from grades group by name;
+
+----------------------------------------------------------
+
+create table if not exists academic_program (
+	id SERIAL primary key,
+	name varchar(20) unique not null
+);
+
+create table if not exists student (
+	code int,
+	name varchar(30) not null,
+	academic_program_fk int,
+	primary key(code),
+	foreign key (academic_program_fk) references academic_program(id)
+);
+
+drop table academic_program;
+drop table student;
+
+insert into academic_program(name) values ('Ing de Sistemas');
+insert into academic_program(name) values ('Ing de Electronica');
+
+insert into student(code, name, academic_program_fk) values (1234, 'Juan', 1);
+insert into student(code, name, academic_program_fk) values (1564, 'Juana', 1);
+insert into student(code, name, academic_program_fk) values (8542, 'Carlos', 2);
+insert into student(code, name, academic_program_fk) values (8425, 'Carla', 2);
+
+
+
+select * from student, academic_program;
+
+select student.*, academic_program.* from student join academic_program on student.academic_program_fk = academic_program.id;
+
+create table if not exists course (
+	course_id serial primary key,
+	name varchar(30)
+);
+
+insert into course(course_id, name) values (12, 'DataBases Foundations');
+insert into course(course_id, name) values (23, 'Computer Networks');
+insert into course(course_id, name) values (5, 'Software Engineering');
+
+create table if not exists enrollment_rel (
+	student_fk int not null,
+	course_fk int not null,
+	semester varchar(10) not null,
+	enroll_date timestamp default now(),
+	primary key (student_fk, course_fk),
+	foreign key (student_fk) references student(code),
+	foreign key (course_fk) references course(course_id)
+);
+
+insert into enrollment_rel(student_fk, course_fk, semester) values (8542, 12, '2024-1');
+insert into enrollment_rel(student_fk, course_fk, semester) values (8542, 23, '2024-1');
+insert into enrollment_rel(student_fk, course_fk, semester) values (1564, 12, '2024-1');
+insert into enrollment_rel(student_fk, course_fk, semester) values (1564, 23, '2024-1');
+
+
+select student.code, student.name as sudent_name, academic_program.name as academic_program, course.name as course, enrollment_rel.semester 
+from student
+join academic_program on student.academic_program_fk = academic_program.id
+join enrollment_rel on enrollment_rel.student_fk = student.code 
+join course on enrollment_rel.course_fk = course.course_id;
